@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>换吧</title>
+    <meta name="description" content="换吧网络">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telphone=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="green">
+    <link rel="stylesheet" href="./styles/styles.css">
+    <script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  </head>
+  <body>
+    <body class="index">
+      <div class="mainPic"><img class="main" src="images/huanba.png">
+        <div class="gif"><img src="images/guoqi.gif"></div>
+      </div><a class="btn" id="deepBtn" href="step.html">换吧网络国庆献礼</a>
+    </body>
+    <script>
+      $(function(){
+          $('body').on('touchmove',function(e) {
+              e.preventDefault();
+          })
+      
+          $('body').on('touchend',function(e) {
+              //- e.preventDefault();
+          })
+      
+          $('#deepBtn').bind('touchend, click',function() {
+              window.href= $(this).attr('href');
+          })
+      
+          var arr=["images/talk.png","images/develop.png","images/delivery.png","images/operation.png","images/success.png","images/thankcountry.png"];
+          for(var i=0;i<6;i++) {
+              var img=new Image();
+              img.src=arr[i];
+          }
+          $.get("scripts/app/index.js",function(){});
+      }); 
+          $.ajax({
+                  url: '/wx/jsconfig?url='+encodeURIComponent(location.href.split('#')[0]),
+                  async: false,
+                  success: function(response) {
+                      var result = JSON.parse(response);
+                      wx.config({
+                          debug: false,
+                          appId: result.appId,
+                          timestamp: result.timestamp,
+                          nonceStr: result.nonceStr,
+                          signature: result.signature,
+                          jsApiList: result.jsApiList
+                      });
+                      wx.ready(function() {
+                          wx.onMenuShareAppMessage({
+                              title: '换吧网络两周年', // 分享标题
+                              desc: '换吧网络两周年，感谢祖国,感谢有你',
+                              link: 'http://huanba.cars48db.com/event/src/index.html',
+                              imgUrl: 'http://huanba.cars48db.com/event/src/images/logo-blue.png'
+                          });
+                          wx.onMenuShareTimeline({
+                              title: '换吧网络两周年',
+                              link: 'http://huanba.cars48db.com/event/src/index.html',
+                              imgUrl: 'http://huanba.cars48db.com/event/src/images/logo-blue.png'
+                          });
+                      })
+                  }
+              })            
+    </script>
+  </body>
+</html>

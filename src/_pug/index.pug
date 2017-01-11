@@ -1,0 +1,59 @@
+extends partials/layout
+block variables
+block append scripts
+block content
+    body.index
+        .mainPic
+            img.main(src="images/huanba.png")
+            .gif
+                img(src="images/guoqi.gif")
+        a.btn#deepBtn(href="step.html") 换吧网络国庆献礼
+    script.
+        $(function(){
+            $('body').on('touchmove',function(e) {
+                e.preventDefault();
+            })
+
+            $('body').on('touchend',function(e) {
+                //- e.preventDefault();
+            })
+
+            $('#deepBtn').bind('touchend, click',function() {
+                window.href= $(this).attr('href');
+            })
+
+            var arr=["images/talk.png","images/develop.png","images/delivery.png","images/operation.png","images/success.png","images/thankcountry.png"];
+            for(var i=0;i<6;i++) {
+                var img=new Image();
+                img.src=arr[i];
+            }
+            $.get("scripts/app/index.js",function(){});
+        }); 
+            $.ajax({
+                    url: '/wx/jsconfig?url='+encodeURIComponent(location.href.split('#')[0]),
+                    async: false,
+                    success: function(response) {
+                        var result = JSON.parse(response);
+                        wx.config({
+                            debug: false,
+                            appId: result.appId,
+                            timestamp: result.timestamp,
+                            nonceStr: result.nonceStr,
+                            signature: result.signature,
+                            jsApiList: result.jsApiList
+                        });
+                        wx.ready(function() {
+                            wx.onMenuShareAppMessage({
+                                title: '换吧网络两周年', // 分享标题
+                                desc: '换吧网络两周年，感谢祖国,感谢有你',
+                                link: 'http://huanba.cars48db.com/event/src/index.html',
+                                imgUrl: 'http://huanba.cars48db.com/event/src/images/logo-blue.png'
+                            });
+                            wx.onMenuShareTimeline({
+                                title: '换吧网络两周年',
+                                link: 'http://huanba.cars48db.com/event/src/index.html',
+                                imgUrl: 'http://huanba.cars48db.com/event/src/images/logo-blue.png'
+                            });
+                        })
+                    }
+                })            

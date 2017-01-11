@@ -1,0 +1,102 @@
+extends partials/layout
+block variables
+block append scripts
+    script(src="scripts/app/index.js")
+block content
+    body.step.step0
+        .logo
+            img(src="images/logo.png")
+        .title
+            .txt.txt0.active.one 商业梳理&产品设计
+            .txt.txt1 产品研发
+            .txt.txt2 测试交付
+            .txt.txt3 代理运营
+            .txt.txt4 项目成功
+            .txt.txt5 感谢有你
+        .main
+            .main-pic
+                img.active.one(src="images/talk.png")
+                img(src="images/develop.png")
+                img(src="images/delivery.png")
+                img(src="images/operation.png")
+                img(src="images/success.png")
+                img(src="images/thankcountry.png")
+            .round
+                .slice
+                .slice
+                .slice
+                .slice
+                .slice
+                .slice
+        .content
+            .txt.txt0.active.one 换吧网络为企业量身打造移动端PC端最具有市场影响，竞争能力，工作效率，为一体的服务型平台
+            .txt.txt1 信息化流程管理专家，领先的应用解决方案，助力企业系统架构完善.部署简易.实施迅速的开发服务
+            .txt.txt2 模块测试.与系统测试.系统测试.验收测试.平行运行.提高产品质量.降低成本.保证产品为客户和用户所需
+            .txt.txt3 为企业节省成本.时间.精力,已成熟的经验和绝对的能力为企业做最优质的运营服务
+            .txt.txt4
+                p 计算交付-现实预算-良好沟通
+                p -行动计划-项目成功
+                p 两年来，换吧网络已为客户创造市价值两亿
+            .txt.txt5
+                p 感谢祖国,感谢有你
+                p 换吧两周年倾情回馈
+                #sharebtn 快来分享吧
+        .points
+            .point.point0.active
+            .point.point1
+            .point.point2
+            .point.point3
+            .point.point4
+            .point.point5
+        .cover
+            .box
+                img(src="images/share.png")
+            .txt 点击右上方按钮，快来分享吧
+        script.
+            var radius = window.screen.availWidth *0.9/ 2 - 15;
+            for (var i = 1, str = ""; i <= 36; i++) {
+                if (i % 6 == 1) {
+                    if (i == 1) {
+                        str = "<div class='bot big-round active'><div class='border'></div></div>";
+                    } else {
+                        str = "<div class='bot big-round'><div class='border'></div></div>";
+                    }
+                    var slice = parseInt((i - 1) / 6);
+                    $(".round .slice:eq(" + slice + ")").append(str);
+                    var ahd = (i - 1) * 10 * Math.PI / 180;
+
+                } else {
+                    str = "<div class='bot small-round'></div>";
+                    $(".round .slice:eq(" + slice + ")").append(str);
+                    var ahd = (i - 1) * 10 * Math.PI / 180;
+                    $(".round .bot:eq(" + (i - 1) + ")").css({ "left": Math.sin(ahd) * radius*Math.random(), "top": -Math.cos(ahd) * radius*Math.random() })
+               }
+                $(".round .bot:eq(" + (i - 1) + ")").animate({ "left": Math.sin(ahd) * radius, "top": -Math.cos(ahd) * radius },1000,function(){
+                    $(".round .small-round").removeClass("bot");
+                });
+            }
+            $.get('/wx/jsconfig?url='+location.href.split('#')[0], function(response) {
+                    var result = JSON.parse(response);
+                    wx.config({
+                        debug: false,
+                        appId: result.appId,
+                        timestamp: result.timestamp,
+                        nonceStr: result.nonceStr,
+                        signature: result.signature,
+                        jsApiList: result.jsApiList
+                    });
+                    wx.ready(function() {
+                        wx.onMenuShareAppMessage({
+                            title: '换吧网络两周年', // 分享标题
+                            desc: '换吧网络两周年，感谢祖国,感谢有你',
+                            link: 'http://huanba.cars48db.com/event/src/index.html',
+                            imgUrl: 'http://huanba.cars48db.com/event/src/images/logo-blue.png'
+                        });
+                        wx.onMenuShareTimeline({
+                            title: '换吧网络两周年',
+                            link: 'http://huanba.cars48db.com/event/src/index.html',
+                            imgUrl: 'http://huanba.cars48db.com/event/src/images/logo-blue.png'
+                        });
+                    });
+                })
+        
